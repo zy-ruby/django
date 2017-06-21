@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block meta %}<meta charset="utf-8">{% endblock %}
+
+{% block title %}ruru-register{% endblock %}
+
+{% block link %}
+	<style>
+	body
+	{
+		text-align:center;
+	}
+	</style>
+{% endblock %}
+
+{% block body %}
+ <br><br><br>
+ <h1>Welcome to Ruru's club</h1>
+	<br>
+    <form name="input" action="register" method="post">
+		Username: <br><input type="text" name="username"> <br><br>
+		First Name:<br><input type="text" name="firstname"> <br><br>
+		Last Name:<br><input type="text" name="lastname"> <br><br>
+		Password: <br><input type="text" name="password"> <br><br>
+		Confirm Password: <br> <input type="text" name="confirmpassword"> <br><br>
+		<input type="submit" value="Register^^" style = "border-radius:20px;">
+
+		{% csrf_token %}
+	</form>
+	<br><br>
+	<p> got an account already?   <a href= "{%url 'login'%}" target="_blank"> log in </a> </p>
+
+{% endblock %}

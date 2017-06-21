@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block meta %}<meta charset="utf-8">{% endblock %}
+
+{% block title %}ruru's club-globalstream{% endblock %}
+
+{% block link %}
+	<style>
+	body
+	{
+		text-align:center;
+	}
+	</style>
+{% endblock %}
+
+{% block body %}
+<div id="container" style="width:1000px">
+
+			<div id="header" style="background-color:#C0C0C0;">
+			<h1 style="margin-bottom:0;">Ruru's club</h1></div>
+
+			<div id="menu" style="background-color:#D0D0D0;height:8000px;width:250px;float:left;">
+
+				<br><br><br><br><br>
+				<a href="{%url 'profile' username %}"> <button type="button" style ="padding:25px">My Profile</button></a>
+				<br><br><br><br><br><br>
+
+				<form action="{% url 'newpost'%}"  method="post">
+
+					<textarea rows="12" cols="30" name="content" style = "color:darkgrey">
+					content of your new post
+					</textarea><br>
+					<input type="submit" value="New Post">
+
+				{% csrf_token %}
+
+				</form><br><br><br><br><br>
+
+				<a href = "{% url 'logout'%}"> log out</a><br><br>
+			</div>
+
+	 		<div id="moments" style="background-color:#E0E0E0;width:750px;float:left;">
+			<h1 style="margin-bottom:0;">Moments</h1></div>
+			<div id="content" style="background-color:#EEEEEE;height:7940px;width:750px;float:left;">
+				{% for item in items %}
+				<div class="postitem" style="border: 3px solid darkslateblue">
+					<p>author:<a href= "{% url 'profile' item.user.username %}" > {{ item.user.username }}</a></p>
+                    <p>{{ item.content }}</p>
+                    <p>Date: {{ item.date }}</p>
+
+                </div>
+                </br>
+            	{% endfor %}
+
+				<div id="footer" style="background-color:#A0A0A0;clear:both;text-align:center;">
+				版权:ruby</div>
+
+			</div>
+		</div>
+
+
+{% endblock %}
