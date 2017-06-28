@@ -13,7 +13,9 @@ urlpatterns = [
     # url(r'^global', rufirst.views.globalstream, name='global'),
     url(r'^profile/(?P<username>\w+)$',rufirst.views.profile, name='profile'),
     url(r'^logout$', django.contrib.auth.views.logout_then_login, name='logout'),
-    url(r'^global', rufirst.views.home, name = 'global'),
+    url(r'^global$', rufirst.views.home, name = 'global'),
+    url(r'^editprofile$', rufirst.views.editprofile, name = 'editprofile'),
+    url(r'^photo/(?P<username>\w+)$',rufirst.views.photo, name='photo'),
     # url(r'^',rufirst.views.profile),
 
 ]

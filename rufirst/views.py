@@ -1,13 +1,18 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.template.loader import get_template
 from django.template import Context
 
 from django.contrib.auth.models import User
+from django.http import HttpResponse, Http404
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
+from mimetypes import guess_type
 from models import Post
+from rufirst.forms import *
+
+
 
 from django.db import transaction
 
@@ -60,32 +65,67 @@ def home(request):
 
 def register(request):
     # Just display the registration form if this is a GET request
+    context = {}
+
     if request.method == 'GET':
-        return render(request, 'register.html')
+        context['form'] = RegisterForm()
+        return render(request, 'register.html',context)
+
+    new_user = User()
+    form = RegisterForm(request.POST, instance=new_user)
 
 
-    new_username = request.POST['username']
-    new_password = request.POST['password']
-    new_confirm = request.POST['confirmpassword']
+    if not form.is_valid():
+        print  "--------- form not valid"
+        context['form'] = form
+        return render(request, 'register.html', context)
 
+    print  "--------- form valid"
 
-    # print testUser.size()
-    if User.objects.filter(username=new_username) or (not(new_password==new_confirm)):
-        print "----------"
-        return render(request, 'register.html')
-    # Creates the new user from the valid form data
-    new_user =  User.objects.create_user(username=new_username,password= new_password,\
-                    first_name=request.POST['firstname'] ,last_name=request.POST['lastname'])
-
-    new_user.save()
-
-    # authenticate() will check the backend, and return user object
-    #  when being verified, and return null when not
-    new_user = authenticate(username=new_username, password = new_password, )
+    form.save();
+    profile = Profile()
+    profile.user = new_user
+    profile.save()
 
     login(request, new_user)
 
     return redirect('global')
+
+@login_required()
+def editprofile(request):
+
+    context = {}
+    thisuser = request.user
+    profileEntry = get_object_or_404(Profile, user=thisuser)
+
+    form = EditProfileForm(request.POST, request.FILES, instance=profileEntry)
+    context['form'] = form
+
+    if request.method == 'GET':
+
+        return render(request, 'editprofile.html', context)
+
+
+    if not form.is_valid():
+        print "edit profile form not valid"
+
+        return render(request,'editprofile.html',context)
+
+    form.save()
+
+    return redirect('global')
+
+@login_required()
+def photo(request, username):
+    thisuser = User.objects.get(username=username)
+    profile = get_object_or_404(Profile, user = thisuser)
+    if not profile.photo:
+        # raise Http404
+        print "======default===="
+        return HttpResponse( "{% static 'default.jpg' %}" )
+    print "======not default===="
+    content_type = guess_type(profile.photo.name)
+    return HttpResponse(profile.photo, content_type=content_type)
 
 @login_required()
 def newpost(request):
@@ -113,7 +153,9 @@ def profile(request,username):
     # user = request.user
     thisuser = User.objects.get(username=username)
     items = Post.objects.all().filter(user = thisuser).order_by('-date')
-    return render(request,'profile.html',{'user':thisuser, 'items':items})
+
+    profile = Profile.objects.get(user =thisuser)
+    return render(request,'profile.html',{'user':thisuser, 'items':items, 'profile':profile})
 
 # @login_required()
 # def globalstream(request,username):

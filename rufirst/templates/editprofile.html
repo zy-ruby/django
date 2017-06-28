@@ -2,7 +2,7 @@
 
 {% block meta %}<meta charset="utf-8">{% endblock %}
 
-{% block title %}ruru-register{% endblock %}
+{% block title %}ruru-edit profile{% endblock %}
 
 {% block link %}
 	<style>
@@ -15,9 +15,9 @@
 
 {% block body %}
  <br><br><br>
- <h1>Welcome to Ruru's club</h1>
+ <h1>Ruru's Club - Edit Profile</h1>
 	<br>
-    <form name="input" action="register" method="post">
+    <form enctype="multipart/form-data" name="input" action="editprofile" method="post">
 		<!--Username: <br><input type="text" name="username"> <br><br>-->
 		<!--First Name:<br><input type="text" name="firstname"> <br><br>-->
 		<!--Last Name:<br><input type="text" name="lastname"> <br><br>-->

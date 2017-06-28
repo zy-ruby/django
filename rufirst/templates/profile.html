@@ -22,17 +22,29 @@
 			<h1 style="margin-bottom:0;">Ruru's club</h1></div>
 
 			<div id="menu" style="background-color:#D0D0D0;height:8000px;width:200px;float:left;">
-				<br><br><br><br><br><p> Profile for {{user.username}}</p><br><br><br><br><br>
+				 <!--{% if profile.photo %}-->
+
+                    <img src="{% url 'photo' user.username %}" width="150px" height="150px">
+                <!--{% else %}-->
+                    <!--{% load static %}-->
+                    <!--<img src="{% static 'default.jpg' %}" alt="Default Photo" width="150px" height="150px">-->
+                <!--{% endif %}-->
+
+				<br><br> Profile for {{user.username}}</p><br>
 				<b>Username:{{user.username}}</b><br><br><br>
 				<b>First Name:{{user.first_name}}</b><br><br><br>
-				<b>Last Name:{{user.last_name}}</b><br><br><br><br><br>
-				<br><br><br><br><br>
-				<a href = "{% url 'logout'%}"> log out</a><r>
+				<b>Last Name:{{user.last_name}}</b><br><br><br>
+				<b>Age:{{profile.age}}</b><br><br><br>
+				<b>Bio:{{profile.bio}}</b><br><br><br>
+				<br><br>
+				<br><br>
+				<br><br><br>
+				<a href = "{% url 'logout'%}"> log out</a> <br>
 			</div>
 
 	 		<div id="content" style="background-color:#E0E0E0;width:800px;float:left;">
 			<h1 style="margin-bottom:0;">His/Her Moments</h1></div>
-			<div id="content" style="background-color:#EEEEEE;height:7940px;width:800px;float:left;">
+			<div id="contents" style="background-color:#EEEEEE;height:7940px;width:800px;float:left;">
 			{% for item in items %}
 				<div class="postitem" style="border: 1px solid darkslateblue">
                     <a href="" >{{ item.username.username }}</a>

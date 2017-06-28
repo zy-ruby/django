@@ -23,6 +23,8 @@
 
 				<br><br><br><br><br>
 				<a href="{%url 'profile' username %}"> <button type="button" style ="padding:25px">My Profile</button></a>
+				<br><br><br><br>
+				<a href="{%url 'editprofile' %}"> <button type="button" style ="padding:25px"> Edit My Profile</button></a>
 				<br><br><br><br><br><br>
 
 				<form action="{% url 'newpost'%}"  method="post">
@@ -44,6 +46,15 @@
 			<div id="content" style="background-color:#EEEEEE;height:7940px;width:750px;float:left;">
 				{% for item in items %}
 				<div class="postitem" style="border: 3px solid darkslateblue">
+
+					<!--{% if profile.photo %}-->
+
+
+                <!--{% else %}-->
+                    <!--{% load static %}-->
+                    <!--<img src="{% static 'default.jpg' %}" alt="Default Photo" width="50px" height="50px">-->
+                <!--{% endif %}-->
+					<img src="{% url 'photo' item.user.username %}" width="50px" height="50px">
 					<p>author:<a href= "{% url 'profile' item.user.username %}" > {{ item.user.username }}</a></p>
                     <p>{{ item.content }}</p>
                     <p>Date: {{ item.date }}</p>
